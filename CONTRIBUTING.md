@@ -1,46 +1,50 @@
-*This is a suggested `CONTRIBUTING.md` file template for use by open sourced Salesforce projects. The main goal of this file is to make clear the intents and expectations that end-users may have regarding this project and how/if to engage with it. Adjust as needed (especially look for `{project_slug}` which refers to the org and repo name of your project) and remove this paragraph before committing to your repo.*
+# Contributing Guide For tab-s3-converter
 
-# Contributing Guide For {NAME OF PROJECT}
-
-This page lists the operational governance model of this project, as well as the recommendations and requirements for how to best contribute to {PROJECT}. We strive to obey these as best as possible. As always, thanks for contributing – we hope these guidelines make it easier and shed some light on our approach and processes.
+This page lists the operational governance model of this project, as well as the recommendations and requirements for how to best contribute to tab-s3-converter. We strive to obey these as best as possible. As always, thanks for contributing – we hope these guidelines make it easier and shed some light on our approach and processes.
 
 # Governance Model
-> Pick the most appropriate one
-
-## Community Based
-
-The intent and goal of open sourcing this project is to increase the contributor and user base. The governance model is one where new project leads (`admins`) will be added to the project based on their contributions and efforts, a so-called "do-acracy" or "meritocracy" similar to that used by all Apache Software Foundation projects.
-
-> or
 
 ## Salesforce Sponsored
 
-The intent and goal of open sourcing this project is to increase the contributor and user base. However, only Salesforce employees will be given `admin` rights and will be the final arbitrars of what contributions are accepted or not.
-
-> or
-
-## Published but not supported
-
-The intent and goal of open sourcing this project is because it may contain useful or interesting code/concepts that we wish to share with the larger open source community. Although occasional work may be done on it, we will not be looking for or soliciting contributions.
+The intent and goal of open sourcing this project is to increase the contributor and user base. However, only Salesforce employeeshts and will be the final arbiters of what contributions are accepted or not.
 
 # Getting started
 
-Please join the community on {Here list Slack channels, Email lists, Glitter, Discord, etc... links}. Also please make sure to take a look at the project [roadmap](ROADMAP.md) to see where we are headed.
+tab-s3-converter is a small Python tool with no runtime dependencies. To work on it you need Python 3.11+ and [uv](https://docs.as
+
+```sh
+git clone https://github.com/tableau/tab-s3-converter.git
+cd tab-s3-converter
+uv run pytest          # create the dev environment and run the test suite
+uvx ruff check .       # lint
+uvx ruff format .      # format
+```
+
+To try the converter on a file:
+
+```sh
+uv run python -m tab_s3_converter path/to/workbook.twbx -o converted.twbx
+```
+
+See the [README](README.md) for full usage and a description of what the conversion does.
 
 # Issues, requests & ideas
 
 Use GitHub Issues page to submit issues, enhancement requests and discuss ideas.
 
 ### Bug Reports and Fixes
--  If you find a bug, please search for it in the [Issues](https://github.com/{project_slug}/issues), and if it isn't already tracked,
-   [create a new issue](https://github.com/{project_slug}/issues/new). Fill out the "Bug Report" section of the issue template. Even if an Issue is closed, feel free to comment and add details, it will still
-   be reviewed.
+-  If you find a bug, please search for it in the [Issues](https://github.com/tableau/tab-s3-converter/issues), and if it isn't already tracked,
+   [create a new issue](https://github.com/tableau/tab-s3-converter/issues/new). Please include:
+   -  The file type (`.twb`, `.tds`, `.twbx`, or `.tdsx`) and the Tableau version that produced it.
+   -  The exact command you ran and its output. Re-run with `--debug` to include the full traceback.
+   -  A minimal file that reproduces the problem, if you can share one. **Do not attach workbooks or data sources that contain real credentials, bucket names, or customer data.** Replace them with placeholders first.
+-  Even if an Issue is closed, feel free to comment and add details, it will still be reviewed.
 -  Issues that have already been identified as a bug (note: able to reproduce) will be labelled `bug`.
--  If you'd like to submit a fix for a bug, [send a Pull Request](#creating_a_pull_request) and mention the Issue number.
-  -  Include tests that isolate the bug and verifies that it was fixed.
+-  If you'd like to submit a fix for a bug, [send a Pull Request](#creating-a-pull-request) and mention the Issue number.
+   -  Include tests that isolate the bug and verify that it was fixed.
 
 ### New Features
--  If you'd like to add new functionality to this project, describe the problem you want to solve in a [new Issue](https://github.com/{project_slug}/issues/new).
+-  If you'd like to add new functionality to this project, describe the problem you want to solve in a [new Issue](https://github.com/tableau/tab-s3-converter/issues/new).
 -  Issues that have been identified as a feature request will be labelled `enhancement`.
 -  If you'd like to implement the new feature, please wait for feedback from the project
    maintainers before spending too much time writing the code. In some cases, `enhancement`s may
@@ -50,8 +54,8 @@ Use GitHub Issues page to submit issues, enhancement requests and discuss ideas.
 -  If you'd like to improve the tests, you want to make the documentation clearer, you have an
    alternative implementation of something that may have advantages over the way it's currently
    done, or you have any other change, we would be happy to hear about it!
-  -  If it's a trivial change, go ahead and [send a Pull Request](#creating_a_pull_request) with the changes you have in mind.
-  -  If not, [open an Issue](https://github.com/{project_slug}/issues/new) to discuss the idea first.
+   -  If it's a trivial change, go ahead and [send a Pull Request](#creating-a-pull-request) with the changes you have in mind.
+   -  If not, [open an Issue](https://github.com/tableau/tab-s3-converter/issues/new) to discuss the idea first.
 
 If you're new to our project and looking for some way to make your first contribution, look for
 Issues labelled `good first contribution`.
@@ -59,16 +63,26 @@ Issues labelled `good first contribution`.
 # Contribution Checklist
 
 - [x] Clean, simple, well styled code
+  - Code must pass `uvx ruff check .` and be formatted with `uvx ruff format .` (configured in `pyproject.toml`: line length 100, Python 3.11 target).
 - [x] Commits should be atomic and messages must be descriptive. Related issues should be mentioned by Issue number.
 - [x] Comments
   - Module-level & function-level comments.
   - Comments on complex blocks of code or algorithms (include references to sources).
+- [x] File headers
+  - Every new source and test file starts with the license header:
+    ```python
+    # Copyright (c) 2026, Salesforce, Inc.
+    # SPDX-License-Identifier: Apache-2.0
+    ```
 - [x] Tests
-  - The test suite, if provided, must be complete and pass
-  - Increase code coverage, not versa.
-  - Use any of our testkits that contains a bunch of testing facilities you would need. For example: `import com.salesforce.op.test._` and borrow inspiration from existing tests.
+  - The test suite (`uv run pytest`) must be complete and pass.
+  - Increase code coverage, not the other way around.
+  - Each module in `tab_s3_converter/` has a matching `tests/test_<module>.py`; borrow inspiration from existing tests. Tests against whole sample files go in `tests/test_end_to_end.py`, with sample files in `tests/fixtures/`.
+  - Fixtures must not contain real identifiers. Use placeholders such as `example-bucket` for bucket names and AWS's documented example key `AKIAIOSFODNN7EXAMPLE` for access key IDs.
+  - The converter never modifies the input file, and it preserves supporting files inside `.twbx`/`.tdsx` archives byte-for-byte. Changes that touch these code paths must keep both guarantees and test them.
 - [x] Dependencies
-  - Minimize number of dependencies.
+  - The converter has **no runtime dependencies** and must stay standard-library only. Do not add entries to `dependencies` in `py
+  - Keep dev-only tooling in the `dev` dependency group to a minimum, and commit the updated `uv.lock` with any change to it.
   - Prefer Apache 2.0, BSD3, MIT, ISC and MPL licenses.
 - [x] Reviews
   - Changes must be approved via peer code review
@@ -76,14 +90,14 @@ Issues labelled `good first contribution`.
 # Creating a Pull Request
 
 1. **Ensure the bug/feature was not already reported** by searching on GitHub under Issues.  If none exists, create a new issue so that other contributors can keep track of what you are trying to add/fix and offer suggestions (or let you know if there is already an effort in progress).
-2. **Clone** the forked repo to your machine.
-3. **Create** a new branch to contain your work (e.g. `git br fix-issue-11`)
+2. **Fork** the repo on GitHub and **clone** your fork to your machine.
+3. **Create** a new branch to contain your work (e.g. `git checkout -b fix-issue-11`)
 4. **Commit** changes to your own branch.
-5. **Push** your work back up to your fork. (e.g. `git push fix-issue-11`)
+5. **Push** your work back up to your fork. (e.g. `git push origin fix-issue-11`)
 6. **Submit** a Pull Request against the `main` branch and refer to the issue(s) you are fixing. Try not to pollute your pull request with unintended changes. Keep it simple and small.
 7. **Sign** the Salesforce CLA (you will be prompted to do so when submitting the Pull Request)
 
-> **NOTE**: Be sure to [sync your fork](https://help.github.com/articles/syncing-a-fork/) before making a pull request.
+> **NOTE**: Be sure to [sync your fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) before making a pull request.
 
 # Contributor License Agreement ("CLA")
 In order to accept your pull request, we need you to submit a CLA. You only need
@@ -99,4 +113,19 @@ clear and has sufficient instructions to be able to reproduce the issue.
 Please follow our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 # License
-By contributing your code, you agree to license your contribution under the terms of our project [LICENSE](LICENSE.txt) and to sign the [Salesforce CLA](https://cla.salesforce.com/sign-cla)
+By contributing your code, you agree to license your contribution under the terms of our project [LICENSE](LICENSE) and to sign the [Salesforce CLA](https://cla.salesforce.com/sign-cla)
+
+A few things to check before you commit:
+
+- Governance model: I chose Salesforce Sponsored, since it's the usual choice for Salesforce and Tableau repos. If this is a one-off migration tool you don't plan to maintain, swap in "Published but not supported".
+- Repo slug: I assumed the public repo will be tableau/tab-s3-converter, because your origin is git.soma.salesforce.com/Tableau/tab-s3-converter. If the public org or name is different, do a find/replace.
+- Missing files:
+  - LICENSE: The repo has no LICENSE file, but both NOTICE and this guide link to one, so you'll need to add it before publishing. I linked to LICENSE to match NOTICE, not the template's LICENSE.txt.
+  - CODE_OF_CONDUCT.md: This doesn't exist yet either.
+  - ROADMAP.md: There's no roadmap file and no community channel, so I replaced the "join the community / roadmap" paragraph with dev setup steps.
+  - Issue templates: There aren't any, so I replaced "fill out the Bug Report template" with a list of what to include.
+- Changes to the template text:
+  - Typos and commands: I fixed "arbitrars" (now "arbiters"), "not versa", git br (now git checkout -b) and the git push example, which was missing the remote.
+  - Links: The #creating_a_pull_request anchor now uses the hyphens GitHub generates. I also added a "Fork" step and updated the outdated "sync your fork" link.
+  - Scala example: I replaced the template's Scala testkit example (com.salesforce.op.test._) with this repo's test layout.
+- Project-specific rules: I added rules for the license header, the stdlib-only requirement and placeholder-only fixtures. They coers, the README and commit bead642, which scrubbed real values from the fixtures.
