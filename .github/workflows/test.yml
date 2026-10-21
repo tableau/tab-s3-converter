@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Static Analysis
-        if: matrix.os == 'ubuntu-latest' && matrix.python-version == "3.11"
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
         uses: astral-sh/ruff-action@v4.1.0 
 
       - name: Set up uv
