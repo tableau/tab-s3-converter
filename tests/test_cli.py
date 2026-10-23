@@ -5,6 +5,7 @@
 import contextlib
 import io
 import os
+import sys
 import tempfile
 import unittest
 
@@ -118,7 +119,10 @@ class RunTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(os.path.exists(os.path.join(self.dir, "in.converted.twb")))
 
-    @unittest.skipIf(getattr(os, "geteuid", lambda: 1000)() == 0, "skip as root")
+    @unittest.skipIf(
+        sys.platform.startswith("win") or getattr(os, "geteuid", lambda: 1000)() == 0,
+        "skip as root or on Windows",
+    )
     def test_unreadable_input_exits_2(self):
         """Unreadable input file raises OSError and exits 2 with error message."""
         src = self._write("in.twb", MINIMAL_S3)
